@@ -11,7 +11,7 @@ cmake -D CMAKE_INSTALL_PREFIX=$PREFIX \
       -D ZLIB_INCLUDE_DIR=$PREFIX/include \
       $SRC_DIR
 
-make -j$CPU_COUNT
+make -j${CPU_COUNT} ${VERBOSE_CM}
 ctest
-make install -j$CPU_COUNT
+make install -j${CPU_COUNT}
 make clean
