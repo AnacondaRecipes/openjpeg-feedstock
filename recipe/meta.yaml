@@ -1,4 +1,4 @@
-{% set version = "2.3.0" %}
+{% set version = "2.3.1" %}
 
 package:
   name: openjpeg
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
-  sha256: 3dc787c1bb6023ba846c2a0d9b1f6e179f1cd255172bde9eb75b01f1e6c7d71a
+  sha256: 63f5a4713ecafc86de51bfad89cc07bb788e9bba24ebbf0c4ca637621aadb6a9
   patches:
     - CVE-2018-7648-6d8c0c06ee32dc03ba80acd48334e98728e56cf5.patch
 
