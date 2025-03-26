@@ -9,7 +9,7 @@ source:
   sha256: 90e3896fed910c376aaf79cdd98bdfdaf98c6472efd8e1debf0a854938cbda6a
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # good compatibility in 2.x series, check before new release
     # http://www.openjpeg.org/abi-check/timeline/openjpeg/
@@ -27,9 +27,9 @@ requirements:
     - make   # [unix]
     - ninja  # [win]
   host:
-    - libtiff
-    - libpng
-    - zlib
+    - libtiff 4.7.0
+    - libpng {{ libpng }}
+    - zlib {{ zlib }}
 
 test:
   files:
