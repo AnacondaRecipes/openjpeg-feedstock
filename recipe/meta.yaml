@@ -10,6 +10,7 @@ source:
 
 build:
   number: 1
+  skip: true  # [s390x]
   run_exports:
     # good compatibility in 2.x series, check before new release
     # http://www.openjpeg.org/abi-check/timeline/openjpeg/
