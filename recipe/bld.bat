@@ -6,6 +6,7 @@ cmake -GNinja ^
       %CMAKE_ARGS% ^
       -D CMAKE_BUILD_TYPE=Release ^
       -D BUILD_SHARED_LIBS=ON ^
+      -D BUILD_STATIC_LIBS=OFF ^
       -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
       -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
       -D PNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
