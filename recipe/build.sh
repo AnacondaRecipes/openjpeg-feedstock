@@ -22,7 +22,7 @@ pushd build
         ..
 
   cmake --build . --config Release --parallel ${CPU_COUNT} --verbose
-  ctest -C Release -j${CPU_COUNT}
+  ctest -C Release -j${CPU_COUNT} --verbose
   cmake --build . --config Release --target install --parallel ${CPU_COUNT}
 
 popd
