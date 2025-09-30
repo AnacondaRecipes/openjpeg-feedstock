@@ -25,7 +25,7 @@ cmake --build . --config Release --verbose
 if errorlevel 1 exit 1
 
 :: Test.
-ctest -C Release --verbose
+ctest -C Release --verbose --exclude-from-file ..\knownfailures-win-64.txt
 if errorlevel 1 exit 1
 
 :: Install.

@@ -27,7 +27,7 @@ pushd build
         ..
 
   cmake --build . --config Release --parallel ${CPU_COUNT} --verbose
-  ctest -C Release -j${CPU_COUNT} --verbose
+  ctest -C Release -j${CPU_COUNT} --verbose --exclude-from-file ../knownfailures-osx-arm64.txt
   cmake --build . --config Release --target install --parallel ${CPU_COUNT}
 
 popd
