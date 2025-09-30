@@ -25,7 +25,7 @@ cmake --build . --config Release --verbose
 if errorlevel 1 exit 1
 
 :: Test.
-ctest --exclude-from-file ../tools/travis-ci/knownfailures-windows-vs2010-x86-Release-3rdP.txt -C Release --verbose
+ctest -C Release --verbose
 if errorlevel 1 exit 1
 
 :: Install.

@@ -27,7 +27,7 @@ pushd build
         ..
 
   cmake --build . --config Release --parallel ${CPU_COUNT} --verbose
-  ctest --exclude-from-file ../tools/travis-ci/knownfailures-macOS14.7-xcode15.4-arm64-Release-3rdP.txt -C Release -j${CPU_COUNT} --verbose
+  ctest -C Release -j${CPU_COUNT} --verbose
   cmake --build . --config Release --target install --parallel ${CPU_COUNT}
 
 popd
