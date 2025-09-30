@@ -1,11 +1,15 @@
 mkdir build
 cd build
 
+git clone https://github.com/uclouvain/openjpeg-data.git data
+
 cmake -GNinja ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
       -D CMAKE_BUILD_TYPE=Release ^
       -D BUILD_SHARED_LIBS=ON ^
+      -D BUILD_UNIT_TESTS=ON ^
+      -D OPJ_DATA_ROOT=data ^
       -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
       -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
       -D PNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
