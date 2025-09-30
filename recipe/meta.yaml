@@ -24,6 +24,7 @@ requirements:
     - {{ stdlib('c') }}  # [not osx]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - git
     - cmake
     - make  # [unix]
     - ninja  # [win]
