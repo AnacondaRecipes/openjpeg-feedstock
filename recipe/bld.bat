@@ -1,8 +1,10 @@
 mkdir build
 cd build
 
+:: Download data for running the tests.
 git clone https://github.com/uclouvain/openjpeg-data.git data
 
+:: Configure.
 cmake -GNinja ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
@@ -22,10 +24,10 @@ cmake -GNinja ^
 cmake --build . --config Release --verbose
 if errorlevel 1 exit 1
 
-:: Install.
-cmake --build . --config Release --target install --verbose
+:: Test.
+ctest --exclude-from-file ../tools/travis-ci/knownfailures-windows-vs2010-x86-Release-3rdP.txt -C Release --verbose
 if errorlevel 1 exit 1
 
-:: Test.
-ctest -C Release --verbose
+:: Install.
+cmake --build . --config Release --target install --verbose
 if errorlevel 1 exit 1
