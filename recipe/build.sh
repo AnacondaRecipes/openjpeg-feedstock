@@ -26,8 +26,14 @@ pushd build
         "${CMAKE_PLATFORM_FLAGS[@]}" \
         ..
 
-  cmake --build . --config Release --parallel ${CPU_COUNT} --verbose
-  ctest -C Release -j${CPU_COUNT} --verbose --exclude-from-file ../knownfailures-osx-arm64.txt
-  cmake --build . --config Release --target install --parallel ${CPU_COUNT}
+  # Build and install
+  cmake --build . --config Release --parallel ${CPU_COUNT} --target install --verbose
+
+  if [[ -f "../knownfailures-${target_platform}.txt" ]]; then
+    ctest -C Release -j"${CPU_COUNT}" --verbose --exclude-from-file "../knownfailures-${target_platform}.txt"
+  else
+    echo "Warning: Known failures file not found for target platform: ${target_platform}"
+    ctest -C Release -j"${CPU_COUNT}" --verbose
+  fi
 
 popd

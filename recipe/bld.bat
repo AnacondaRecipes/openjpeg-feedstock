@@ -21,13 +21,9 @@ cmake -GNinja ^
       %SRC_DIR%
 
 :: Build.
-cmake --build . --config Release --verbose
+cmake --build . --config Release --target install --verbose
 if errorlevel 1 exit 1
 
 :: Test.
-ctest -C Release --verbose --exclude-from-file ..\knownfailures-win-64.txt
-if errorlevel 1 exit 1
-
-:: Install.
-cmake --build . --config Release --target install --verbose
+ctest -C Release --verbose --exclude-from-file "..\knownfailures-win-64.txt"
 if errorlevel 1 exit 1
