@@ -12,19 +12,19 @@ if errorlevel 1 exit 1
 
 :: Configure
 cmake -GNinja ^
-      -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+      -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
-      -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
-      -D BUILD_SHARED_LIBS=ON ^
-      -D BUILD_UNIT_TESTS=ON ^
-      -D BUILD_TESTING=ON ^
-      -D OPJ_DATA_ROOT=%SRC_DIR%\build\data ^
-      -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
-      -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
-      -D PNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
-      -D PNG_PNG_INCLUDE_DIR=%LIBRARY_INC% ^
-      -D ZLIB_LIBRARY=%LIBRARY_LIB%\zlib.lib ^
-      -D ZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+      -DBUILD_SHARED_LIBS=ON ^
+      -DBUILD_UNIT_TESTS=ON ^
+      -DBUILD_TESTING=ON ^
+      -DOPJ_DATA_ROOT=%SRC_DIR%\build\data ^
+      -DTIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
+      -DTIFF_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DPNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
+      -DPNG_PNG_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DZLIB_LIBRARY=%LIBRARY_LIB%\zlib.lib ^
+      -DZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
       %SRC_DIR%
 if errorlevel 1 exit 1
 
