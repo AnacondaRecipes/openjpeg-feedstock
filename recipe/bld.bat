@@ -17,6 +17,7 @@ cmake -GNinja ^
       -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
       -D BUILD_SHARED_LIBS=ON ^
       -D BUILD_UNIT_TESTS=ON ^
+      -D BUILD_TESTING=ON ^
       -D OPJ_DATA_ROOT=%SRC_DIR%\build\data ^
       -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
       -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
