@@ -1,0 +1,13 @@
+ETS-JP2-file5.jp2-decode
+ETS-JP2-file5.jp2-compare2ref
+NR-JP2-file5.jp2-compare2base
+ETS-JP2-file7.jp2-decode
+ETS-JP2-file7.jp2-compare2ref
+NR-JP2-file7.jp2-compare2base
+ETS-JP2-file8.jp2-compare2ref
+NR-JP2-file8.jp2-compare2base
+NR-DEC-issue171.jp2-71-decode-md5
+NR-DEC-issue226.j2k-74-decode
+NR-DEC-issue226.j2k-74-decode-md5
+NR-DEC-issue559-eci-090-CIELab.jp2-255-decode-md5
+NR-DEC-issue559-eci-091-CIELab.jp2-256-decode-md5
