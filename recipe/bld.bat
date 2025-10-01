@@ -5,6 +5,7 @@ set BUILD_TYPE=Release
 
 :: # Download the data repository required to run the tests into <root>/build/data
 git clone https://github.com/uclouvain/openjpeg-data.git data
+if errorlevel 1 exit 1
 
 :: Enable tests by passing BUILD_TESTING (ctest), BUILD_UNIT_TESTS
 :: Pass the directory of the data repository via OPJ_DATA_ROOT
@@ -16,7 +17,7 @@ cmake -GNinja ^
       -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
       -D BUILD_SHARED_LIBS=ON ^
       -D BUILD_UNIT_TESTS=ON ^
-      -D OPJ_DATA_ROOT=data ^
+      -D OPJ_DATA_ROOT=%SRC_DIR%\build\data ^
       -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
       -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
       -D PNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
@@ -24,6 +25,7 @@ cmake -GNinja ^
       -D ZLIB_LIBRARY=%LIBRARY_LIB%\zlib.lib ^
       -D ZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
       %SRC_DIR%
+if errorlevel 1 exit 1
 
 :: Build and install
 cmake --build . --config %BUILD_TYPE% --target install --verbose
