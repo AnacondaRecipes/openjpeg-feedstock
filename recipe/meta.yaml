@@ -7,6 +7,10 @@ package:
 source:
   - url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
     sha256: a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a
+  # Data required to run the tests
+  - git_url: https://github.com/uclouvain/openjpeg-data.git
+    git_rev: 39524bd3a601d90ed8e0177559400d23945f96a9
+    folder: opj_data
   # Following upstream pattern on known test failures
   # See upstream repo; tools/travis-ci/knownfailures-*.txt
   - path: tools/conda/knownfailures-win-64.txt
