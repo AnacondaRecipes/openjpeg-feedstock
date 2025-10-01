@@ -1,4 +1,4 @@
-mkdir %SRC_DIR%\build
+mkdir -p %SRC_DIR%\build
 cd %SRC_DIR%\build
 
 set BUILD_TYPE=Release

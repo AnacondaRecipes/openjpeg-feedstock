@@ -5,7 +5,7 @@ if [[ ${target_platform} == osx-64 ]]; then
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
 fi
 
-mkdir build || true
+mkdir -p build || true
 pushd build
 
   # Download the data repository required to run the tests into <root>/build/data
