@@ -8,8 +8,13 @@ fi
 mkdir build || true
 pushd build
 
+  # Download the data repository required to run the tests into <root>/build/data
   git clone https://github.com/uclouvain/openjpeg-data.git data
 
+  # Enable tests by passing BUILD_TESTING (ctest), BUILD_UNIT_TESTS
+  # Pass the directory of the data repository via OPJ_DATA_ROOT
+
+  # Configure
   cmake -DCMAKE_INSTALL_PREFIX=$PREFIX \
         $CMAKE_ARGS \
         -DCMAKE_BUILD_TYPE=Release \
@@ -29,6 +34,7 @@ pushd build
   # Build and install
   cmake --build . --config Release --parallel ${CPU_COUNT} --target install --verbose
 
+  # Test
   if [[ -f "../knownfailures-${target_platform}.txt" ]]; then
     ctest -C Release -j"${CPU_COUNT}" --verbose --exclude-from-file "../knownfailures-${target_platform}.txt"
   else
