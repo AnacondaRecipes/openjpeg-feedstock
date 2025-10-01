@@ -27,7 +27,6 @@ build:
 
 requirements:
   build:
-    - {{ stdlib('c') }}  # [not osx]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - git
