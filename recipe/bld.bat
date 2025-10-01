@@ -1,5 +1,7 @@
-mkdir build
-cd build
+mkdir %SRC_DIR%\build
+cd %SRC_DIR%\build
+
+set BUILD_TYPE=Release
 
 :: # Download the data repository required to run the tests into <root>/build/data
 git clone https://github.com/uclouvain/openjpeg-data.git data
@@ -11,7 +13,7 @@ git clone https://github.com/uclouvain/openjpeg-data.git data
 cmake -GNinja ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
-      -D CMAKE_BUILD_TYPE=Release ^
+      -D CMAKE_BUILD_TYPE=%BUILD_TYPE% ^
       -D BUILD_SHARED_LIBS=ON ^
       -D BUILD_UNIT_TESTS=ON ^
       -D OPJ_DATA_ROOT=data ^
@@ -24,9 +26,9 @@ cmake -GNinja ^
       %SRC_DIR%
 
 :: Build and install
-cmake --build . --config Release --target install --verbose
+cmake --build . --config %BUILD_TYPE% --target install --verbose
 if errorlevel 1 exit 1
 
 :: Test
-ctest -C Release --verbose --exclude-from-file "..\knownfailures-win-64.txt"
+ctest -C %BUILD_TYPE% --verbose --exclude-from-file "..\knownfailures-win-64.txt"
 if errorlevel 1 exit 1
