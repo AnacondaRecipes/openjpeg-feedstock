@@ -46,12 +46,14 @@ outputs:
       - {{ pin_subpackage('lib' + name, max_pin='x.x') }}
     requirements:
       build:
-        # OpenJPEG library only depends on libm
+        # OpenJPEG library depends on libm only
         - {{ compiler('c') }}
     files:
       - lib/libopenjp*.dylib  # [osx]
+      - lib/libopenjp*.a  # [osx]
       - lib/libopenjp*.so  # [unix]
-      - lib/libopenjp*.a  # [unix and osx]
+      - lib/libopenjp*.so.*  # [unix]
+      - lib/libopenjp*.a.*  # [unix]
       - lib/pkgconfig/libopenjp*.pc # [unix and osx]
       - lib/cmake/{{ name }}-{{ short_version }}
       - include/{{ name }}-{{ short_version }}
