@@ -53,8 +53,13 @@ outputs:
       - lib/libopenjp*.so  # [linux]
       - lib/libopenjp*.so.*  # [linux]
       - lib/pkgconfig/libopenjp*.pc # [linux or osx]
-      - lib/cmake/{{ name }}-{{ short_version }}
-      - include/{{ name }}-{{ short_version }}
+      - lib/cmake/{{ name }}-{{ short_version }}  # [linux or osx]
+      - include/{{ name }}-{{ short_version }}  # [linux or osx]
+      - Library/lib/pkgconfig/libopenjp*.pc  # [win]
+      - Library/lib/cmake/{{ name }}-{{ short_version }}  # [win]
+      - Library/include/{{ name }}-{{ short_version }}  # [win]
+      - Library/bin/openjp*.dll  # [win]
+      - Library/lib/openjp*.lib  # [win]
 
   - name: {{ name }}
     run_exports:
@@ -78,7 +83,8 @@ outputs:
       run:
         - {{ pin_subpackage('lib' + name, exact=True) }}
     files:
-      - bin/opj_*
+      - bin/opj_*  # [linux or osx]
+      - Library/bin/opj_*  # [win]
     test:
       files:
         - p0_01.j2k
