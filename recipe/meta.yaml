@@ -50,9 +50,9 @@ outputs:
         - {{ compiler('c') }}
     files:
       - lib/libopenjp*.dylib  # [osx]
-      - lib/libopenjp*.so  # [unix]
-      - lib/libopenjp*.so.*  # [unix]
-      - lib/pkgconfig/libopenjp*.pc # [unix and osx]
+      - lib/libopenjp*.so  # [linux]
+      - lib/libopenjp*.so.*  # [linux]
+      - lib/pkgconfig/libopenjp*.pc # [linux or osx]
       - lib/cmake/{{ name }}-{{ short_version }}
       - include/{{ name }}-{{ short_version }}
 
