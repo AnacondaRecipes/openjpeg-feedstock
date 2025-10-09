@@ -61,6 +61,11 @@ outputs:
       - Library/include/{{ name }}-{{ short_version }}  # [win]
       - Library/bin/openjp*.dll  # [win]
       - Library/lib/openjp*.lib  # [win]
+    test:
+      commands:
+        - test -f $PREFIX/lib/libopenjp2.{{ version }}.dylib  # [osx]
+        - test -f $PREFIX/lib/libopenjp2.so.{{ version }}  # [linux]
+        - if not exist "%LIBRARY_BIN%\openjp2.dll" exit 1  # [win]
 
   - name: {{ name }}
     run_exports:
