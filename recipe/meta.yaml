@@ -47,6 +47,7 @@ outputs:
     requirements:
       build:
         # OpenJPEG library depends on libm only
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
     files:
       - lib/libopenjp*.dylib  # [osx]
@@ -71,6 +72,7 @@ outputs:
       - zlib
     requirements:
       build:
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
       host:
         - {{ pin_subpackage('lib' + name, exact=True) }}
