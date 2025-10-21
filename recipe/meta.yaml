@@ -24,6 +24,8 @@ source:
 
 build:
   number: {{ number }}
+  # TODO: Temporarily skip Windows builds due to a PBP error
+  skip: true  # [win]
 
 requirements:
   build:
