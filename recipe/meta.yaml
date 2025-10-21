@@ -1,4 +1,5 @@
 {% set name = "openjpeg" %}
+{% set number = 0 %}
 {% set version = "2.5.4" %}
 # get "major.minor" version string, e.g. "2.5"
 {% set short_version = version.split('.')[:2] | join('.') %}
@@ -22,7 +23,7 @@ source:
   - path: tools/conda/knownfailures-osx-arm64.txt
 
 build:
-  number: 0
+  number: {{ number }}
 
 requirements:
   build:
