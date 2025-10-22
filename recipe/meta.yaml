@@ -1,41 +1,141 @@
-{% set version = "2.5.2" %}
+{% set name = "openjpeg" %}
+{% set number = 1 %}
+{% set version = "2.5.4" %}
+# get "major.minor" version string, e.g. "2.5"
+{% set short_version = version.split('.')[:2] | join('.') %}
 
 package:
-  name: openjpeg
+  name: {{ name|lower }}-split
   version: {{ version }}
 
 source:
-  url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
-  sha256: 90e3896fed910c376aaf79cdd98bdfdaf98c6472efd8e1debf0a854938cbda6a
+  - url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
+    sha256: a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a
+  # Data required to run the tests
+  - git_url: https://github.com/uclouvain/openjpeg-data.git
+    git_rev: 39524bd3a601d90ed8e0177559400d23945f96a9
+    folder: opj_data
+  # Following upstream pattern on known test failures
+  # See upstream repo; tools/travis-ci/knownfailures-*.txt
+  - path: tools/conda/knownfailures-win-64.txt
+  - path: tools/conda/knownfailures-linux-64.txt
+  - path: tools/conda/knownfailures-linux-aarch64.txt
+  - path: tools/conda/knownfailures-osx-arm64.txt
 
 build:
-  number: 1
-  run_exports:
-    # good compatibility in 2.x series, check before new release
-    # http://www.openjpeg.org/abi-check/timeline/openjpeg/
-    - {{ pin_subpackage('openjpeg') }}
-  ignore_run_exports:
-    # Needed as a transitive build-time dependency to enable PNG support but
-    # is not actually required by the output binaries.
-    - zlib
+  number: {{ number }}
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
     - cmake
-    - make   # [unix]
-    - ninja  # [win]
+    - make          # [unix]
+    - ninja-base    # [win]
   host:
+    # Refer to the package changelog for the latest versions of the dependencies
+    # https://github.com/uclouvain/openjpeg/blob/master/CHANGELOG.md
+    # liblcms2 is for opj_compress, opj_decompress, opj_dump executables
     - libtiff {{ libtiff }}
     - libpng {{ libpng }}
     - zlib {{ zlib }}
+    - lcms2 {{ lcms2 }}
 
-test:
-  files:
-    - p0_01.j2k
-  commands:
-    - opj_dump -i p0_01.j2k
+outputs:
+  - name: lib{{ name }}
+    run_exports:
+      # good compatibility in 2.x series, check before new release
+      # http://www.openjpeg.org/abi-check/timeline/openjpeg/
+      - {{ pin_subpackage('lib' + name, max_pin='x.x') }}
+    requirements:
+      build:
+        # OpenJPEG library depends on libc and libm only
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+    files:
+      - lib/libopenjp*.dylib                                # [osx]
+      - lib/libopenjp*.so                                   # [linux]
+      - lib/libopenjp*.so.*                                 # [linux]
+      - lib/pkgconfig/libopenjp*.pc                         # [linux or osx]
+      - lib/cmake/{{ name }}-{{ short_version }}            # [linux or osx]
+      - include/{{ name }}-{{ short_version }}              # [linux or osx]
+      - Library/lib/pkgconfig/libopenjp*.pc                 # [win]
+      - Library/lib/cmake/{{ name }}-{{ short_version }}    # [win]
+      - Library/include/{{ name }}-{{ short_version }}      # [win]
+      - Library/bin/openjp*.dll                             # [win]
+      - Library/lib/openjp*.lib                             # [win]
+    test:
+      commands:
+        - test -f $PREFIX/lib/libopenjp2.{{ version }}.dylib    # [osx]
+        - test -f $PREFIX/lib/libopenjp2.so.{{ version }}       # [linux]
+        - if not exist "%LIBRARY_BIN%\openjp2.dll" exit 1       # [win]
+    about:
+        home: https://www.openjpeg.org/
+        dev_url: https://github.com/uclouvain/openjpeg
+        doc_url: https://github.com/uclouvain/openjpeg/wiki/DocJ2KCodec
+        license: BSD-2-Clause
+        license_family: BSD
+        license_file: LICENSE
+        summary: An open-source JPEG 2000 codec written in C.
+        description: |
+          OpenJPEG is an open-source JPEG 2000 codec written in C language.
+          It has been developed in order to promote the use of JPEG 2000,
+          a still-image compression standard from the Joint Photographic Experts Group (JPEG).
+          Since may 2015, it is officially recognized by ISO/IEC and ITU-T
+          as a JPEG 2000 Reference Software.
+
+          This package provides the OpenJPEG library and its development headers.
+
+  - name: {{ name }}
+    run_exports:
+      # good compatibility in 2.x series, check before new release
+      # http://www.openjpeg.org/abi-check/timeline/openjpeg/
+      - {{ pin_subpackage('lib' + name, max_pin='x.x') }}
+    ignore_run_exports:
+      # Needed as a transitive build-time dependency but is not actually required by the output binaries.
+      - zlib
+    requirements:
+      build:
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+      host:
+        - {{ pin_subpackage('lib' + name, exact=True) }}
+        # Refer to the package changelog for the latest versions of the dependencies
+        # https://github.com/uclouvain/openjpeg/blob/master/CHANGELOG.md
+        # libtiff: package changelog indicates 4.6.0, but we don't have this version in our catalog at this time
+        - libtiff {{ libtiff }}
+        # libpng: package changelog indicates 1.6.43, but we don't have this version in our catalog at this time
+        - libpng {{ libpng }}
+        # zlib: package changelog indicates 1.3.1,
+        - zlib {{ zlib }}
+        # liblcms2: package changelog indicates 2.8, but we don't have this version in our catalog at this time
+        - lcms2 {{ lcms2 }}
+      run:
+        - {{ pin_subpackage('lib' + name, exact=True) }}
+    files:
+      - bin/opj_*             # [linux or osx]
+      - Library/bin/opj_*     # [win]
+    test:
+      files:
+        - p0_01.j2k
+      commands:
+        - opj_dump -i p0_01.j2k
+    about:
+        home: https://www.openjpeg.org/
+        dev_url: https://github.com/uclouvain/openjpeg
+        doc_url: https://github.com/uclouvain/openjpeg/wiki/DocJ2KCodec
+        license: BSD-2-Clause
+        license_family: BSD
+        license_file: LICENSE
+        summary: An open-source JPEG 2000 codec written in C - tools.
+        description: |
+          OpenJPEG is an open-source JPEG 2000 codec written in C language.
+          It has been developed in order to promote the use of JPEG 2000,
+          a still-image compression standard from the Joint Photographic Experts Group (JPEG).
+          Since may 2015, it is officially recognized by ISO/IEC and ITU-T
+          as a JPEG 2000 Reference Software.
+
+          This package provides the OpenJPEG tools: opj_compress, opj_decompress, and opj_dump.
 
 about:
     home: https://www.openjpeg.org/
