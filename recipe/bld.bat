@@ -1,27 +1,33 @@
-mkdir build
-cd build
+mkdir -p %SRC_DIR%\build
+cd %SRC_DIR%\build
 
+set BUILD_TYPE=Release
+
+:: Enable tests by passing BUILD_TESTING (ctest), BUILD_UNIT_TESTS
+:: Pass the directory of the data repository via OPJ_DATA_ROOT
+
+:: Configure
 cmake -GNinja ^
-      -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+      -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
-      -D CMAKE_BUILD_TYPE=Release ^
-      -D BUILD_SHARED_LIBS=ON ^
-      -D TIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
-      -D TIFF_INCLUDE_DIR=%LIBRARY_INC% ^
-      -D PNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
-      -D PNG_PNG_INCLUDE_DIR=%LIBRARY_INC% ^
-      -D ZLIB_LIBRARY=%LIBRARY_LIB%\zlib.lib ^
-      -D ZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+      -DBUILD_SHARED_LIBS=ON ^
+      -DBUILD_UNIT_TESTS=ON ^
+      -DBUILD_TESTING=ON ^
+      -DOPJ_DATA_ROOT=%SRC_DIR%\opj_data ^
+      -DTIFF_LIBRARY=%LIBRARY_LIB%\tiff.lib ^
+      -DTIFF_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DPNG_LIBRARY_RELEASE=%LIBRARY_LIB%\libpng.lib ^
+      -DPNG_PNG_INCLUDE_DIR=%LIBRARY_INC% ^
+      -DZLIB_LIBRARY=%LIBRARY_LIB%\zlib.lib ^
+      -DZLIB_INCLUDE_DIR=%LIBRARY_INC% ^
       %SRC_DIR%
-
-:: Build.
-cmake --build . --config Release
 if errorlevel 1 exit 1
 
-:: Install.
-cmake --build . --config Release --target install
+:: Build and install
+cmake --build . --config %BUILD_TYPE% --target install --verbose
 if errorlevel 1 exit 1
 
-:: Test.
-ctest -C Release
+:: Test
+ctest -C %BUILD_TYPE% --verbose --exclude-from-file "..\knownfailures-win-64.txt"
 if errorlevel 1 exit 1
