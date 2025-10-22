@@ -105,12 +105,12 @@ outputs:
         # Refer to the package changelog for the latest versions of the dependencies
         # https://github.com/uclouvain/openjpeg/blob/master/CHANGELOG.md
         # libtiff: package changelog indicates 4.6.0, but we don't have this version in our catalog at this time
-        - libtiff 4.7.0
+        - libtiff {{ libtiff }}
         # libpng: package changelog indicates 1.6.43, but we don't have this version in our catalog at this time
-        - libpng 1.6.39
+        - libpng {{ libpng }}
         - zlib 1.3.1
         # liblcms2: package changelog indicates 2.8, but we don't have this version in our catalog at this time
-        - lcms2 2.16
+        - lcms2 {{ lcms2 }}
       run:
         - {{ pin_subpackage('lib' + name, exact=True) }}
     files:
