@@ -12,6 +12,7 @@ cmake -GNinja ^
       %CMAKE_ARGS% ^
       -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
       -DBUILD_SHARED_LIBS=ON ^
+      -DBUILD_STATIC_LIBS=OFF ^
       -DBUILD_UNIT_TESTS=ON ^
       -DBUILD_TESTING=ON ^
       -DOPJ_DATA_ROOT=%SRC_DIR%\opj_data ^

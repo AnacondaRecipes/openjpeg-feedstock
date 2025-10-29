@@ -16,6 +16,7 @@ pushd build
         $CMAKE_ARGS \
         -DCMAKE_BUILD_TYPE=Release \
         -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_STATIC_LIBS=OFF \
         -DBUILD_UNIT_TESTS=ON \
         -DBUILD_TESTING=ON \
         -DOPJ_DATA_ROOT=$SRC_DIR/opj_data \
