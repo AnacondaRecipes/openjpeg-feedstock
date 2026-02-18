@@ -18,6 +18,7 @@ source:
   # Following upstream pattern on known test failures
   # See upstream repo; tools/travis-ci/knownfailures-*.txt
   - path: tools/conda/knownfailures-win-64.txt
+  - path: tools/conda/knownfailures-win-arm64.txt
   - path: tools/conda/knownfailures-linux-64.txt
   - path: tools/conda/knownfailures-linux-aarch64.txt
   - path: tools/conda/knownfailures-osx-arm64.txt

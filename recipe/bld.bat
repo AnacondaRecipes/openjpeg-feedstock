@@ -3,6 +3,9 @@ cd %SRC_DIR%\build
 
 set BUILD_TYPE=Release
 
+set "CFLAGS=/fp:precise %CFLAGS%"
+set "CXXFLAGS=/fp:precise %CXXFLAGS%"
+
 :: Enable tests by passing BUILD_TESTING (ctest), BUILD_UNIT_TESTS
 :: Pass the directory of the data repository via OPJ_DATA_ROOT
 
@@ -11,6 +14,8 @@ cmake -GNinja ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
       -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+      -DCMAKE_C_FLAGS="%CFLAGS%" ^
+      -DCMAKE_CXX_FLAGS="%CXXFLAGS%" ^
       -DBUILD_SHARED_LIBS=ON ^
       -DBUILD_STATIC_LIBS=OFF ^
       -DBUILD_UNIT_TESTS=ON ^
@@ -30,5 +35,5 @@ cmake --build . --config %BUILD_TYPE% --target install --verbose
 if errorlevel 1 exit 1
 
 :: Test
-ctest -C %BUILD_TYPE% --verbose --exclude-from-file "..\knownfailures-win-64.txt"
+ctest -C %BUILD_TYPE% --verbose --exclude-from-file "..\knownfailures-%target_platform%.txt"
 if errorlevel 1 exit 1
