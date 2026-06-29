@@ -33,6 +33,7 @@ requirements:
     - cmake
     - make          # [unix]
     - ninja-base    # [win]
+    - git
   host:
     # Refer to the package changelog for the latest versions of the dependencies
     # https://github.com/uclouvain/openjpeg/blob/master/CHANGELOG.md
