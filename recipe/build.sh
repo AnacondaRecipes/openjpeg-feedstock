@@ -14,6 +14,7 @@ pushd build
   # Pass the directory of the data repository via OPJ_DATA_ROOT
 
   # Configure
+  # ZLIB is only a configure-time gate for PNG upstream: the tools keep no libz NEEDED entry.
   cmake -DCMAKE_INSTALL_PREFIX=$PREFIX \
         $CMAKE_ARGS \
         -DCMAKE_BUILD_TYPE=Release \

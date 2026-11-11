@@ -14,6 +14,7 @@ set "CXXFLAGS=/fp:precise %CXXFLAGS%"
 :: Pass the directory of the data repository via OPJ_DATA_ROOT
 
 :: Configure
+:: ZLIB is only a configure-time gate for PNG upstream: the tools keep no zlib import.
 cmake -GNinja ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^

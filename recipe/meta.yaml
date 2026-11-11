@@ -43,6 +43,8 @@ requirements:
     # liblcms2 is for opj_compress, opj_decompress, opj_dump executables
     - libtiff {{ libtiff }}
     - libpng {{ libpng }}
+    # Build-time only: upstream calls find_package(PNG) only inside if(ZLIB_FOUND), so
+    # zlib decides whether the tools get PNG support. Nothing keeps a zlib runtime dep.
     - zlib {{ zlib }}
     - lcms2 {{ lcms2 }}
 
@@ -96,16 +98,6 @@ outputs:
       # good compatibility in 2.x series, check before new release
       # http://www.openjpeg.org/abi-check/timeline/openjpeg/
       - {{ pin_subpackage('lib' + name, max_pin='x.x') }}
-    build:
-      # The tools don't link zlib; libzlib only arrives transitively via libpng/libtiff.
-      # Both keys are needed because they filter different things:
-      #  - ignore_run_exports (by spec name): drops libzlib, which libzlib exports for itself.
-      # This is also the key conda-build's overdepending check reads.
-      #  - ignore_run_exports_from (by source package): drops what the zlib package exports.
-      ignore_run_exports:
-        - libzlib
-      ignore_run_exports_from:
-        - zlib
     requirements:
       build:
         - {{ stdlib('c') }}
@@ -118,8 +110,8 @@ outputs:
         - libtiff {{ libtiff }}
         # libpng: package changelog indicates 1.6.43, but we don't have this version in our catalog at this time
         - libpng {{ libpng }}
-        # zlib: package changelog indicates 1.3.1,
-        - zlib {{ zlib }}
+        # No zlib here: the tools have no zlib NEEDED entry. libzlib still arrives
+        # through libpng/libtiff depends, so no run_exports suppression is needed.
         # liblcms2: package changelog indicates 2.8, but we don't have this version in our catalog at this time
         - lcms2 {{ lcms2 }}
       run:
