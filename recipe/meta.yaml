@@ -124,6 +124,9 @@ outputs:
         - p0_01.j2k
       commands:
         - opj_dump -i p0_01.j2k
+        # PNG round-trip: fails if the build lost PNG support (host zlib gate).
+        - opj_decompress -i p0_01.j2k -o out.png
+        - opj_compress -i out.png -o out.j2k
     about:
         home: https://www.openjpeg.org/
         dev_url: https://github.com/uclouvain/openjpeg
