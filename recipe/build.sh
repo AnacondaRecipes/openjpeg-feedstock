@@ -1,6 +1,8 @@
 #!/bin/bash
 
-declare -a CMAKE_PLATFORM_FLAGS
+set -euxo pipefail
+
+declare -a CMAKE_PLATFORM_FLAGS=()
 if [[ ${target_platform} == osx-64 ]]; then
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
 fi
@@ -26,7 +28,7 @@ pushd build
         -DPNG_PNG_INCLUDE_DIR=$PREFIX/include \
         -DZLIB_LIBRARY=$PREFIX/lib/libz${SHLIB_EXT} \
         -DZLIB_INCLUDE_DIR=$PREFIX/include \
-        "${CMAKE_PLATFORM_FLAGS[@]}" \
+        ${CMAKE_PLATFORM_FLAGS[@]+"${CMAKE_PLATFORM_FLAGS[@]}"} \
         ..
 
   # Build and install

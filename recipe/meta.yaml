@@ -1,5 +1,5 @@
 {% set name = "openjpeg" %}
-{% set number = 2 %}
+{% set number = 3 %}
 {% set version = "2.5.4" %}
 # get "major.minor" version string, e.g. "2.5"
 {% set short_version = version.split('.')[:2] | join('.') %}
@@ -11,6 +11,8 @@ package:
 source:
   - url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
     sha256: a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a
+    patches:
+      - fix-heap-buffer-overlfow-in-opj_j2k_read_sod.patch
   # Data required to run the tests
   - git_url: https://github.com/uclouvain/openjpeg-data.git
     git_rev: 39524bd3a601d90ed8e0177559400d23945f96a9
@@ -32,6 +34,7 @@ requirements:
     - {{ compiler('c') }}
     - cmake
     - make          # [unix]
+    - pkg-config    # [unix]
     - ninja-base    # [win]
     - git
   host:
@@ -93,9 +96,16 @@ outputs:
       # good compatibility in 2.x series, check before new release
       # http://www.openjpeg.org/abi-check/timeline/openjpeg/
       - {{ pin_subpackage('lib' + name, max_pin='x.x') }}
-    ignore_run_exports:
-      # Needed as a transitive build-time dependency but is not actually required by the output binaries.
-      - zlib
+    build:
+      # The tools don't link zlib; libzlib only arrives transitively via libpng/libtiff.
+      # Both keys are needed because they filter different things:
+      #  - ignore_run_exports (by spec name): drops libzlib, which libzlib exports for itself.
+      # This is also the key conda-build's overdepending check reads.
+      #  - ignore_run_exports_from (by source package): drops what the zlib package exports.
+      ignore_run_exports:
+        - libzlib
+      ignore_run_exports_from:
+        - zlib
     requirements:
       build:
         - {{ stdlib('c') }}
