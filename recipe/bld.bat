@@ -1,7 +1,11 @@
-mkdir -p %SRC_DIR%\build
-cd %SRC_DIR%\build
+@echo on
 
-set BUILD_TYPE=Release
+if not exist "%SRC_DIR%\build" mkdir "%SRC_DIR%\build"
+if errorlevel 1 exit 1
+cd /d "%SRC_DIR%\build"
+if errorlevel 1 exit 1
+
+set "BUILD_TYPE=Release"
 
 set "CFLAGS=/fp:precise %CFLAGS%"
 set "CXXFLAGS=/fp:precise %CXXFLAGS%"
@@ -10,6 +14,7 @@ set "CXXFLAGS=/fp:precise %CXXFLAGS%"
 :: Pass the directory of the data repository via OPJ_DATA_ROOT
 
 :: Configure
+:: ZLIB is only a configure-time gate for PNG upstream: the tools keep no zlib import.
 cmake -GNinja ^
       -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
       %CMAKE_ARGS% ^
@@ -35,5 +40,11 @@ cmake --build . --config %BUILD_TYPE% --target install --verbose
 if errorlevel 1 exit 1
 
 :: Test
-ctest -C %BUILD_TYPE% --verbose --exclude-from-file "..\knownfailures-%target_platform%.txt"
+set "KNOWN_FAILURES=%SRC_DIR%\knownfailures-%target_platform%.txt"
+if exist "%KNOWN_FAILURES%" (
+  ctest -C %BUILD_TYPE% --verbose --exclude-from-file "%KNOWN_FAILURES%"
+) else (
+  echo Warning: Known failures file not found for target platform: %target_platform%
+  ctest -C %BUILD_TYPE% --verbose
+)
 if errorlevel 1 exit 1

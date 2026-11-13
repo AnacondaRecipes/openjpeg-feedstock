@@ -1,6 +1,8 @@
 #!/bin/bash
 
-declare -a CMAKE_PLATFORM_FLAGS
+set -euxo pipefail
+
+declare -a CMAKE_PLATFORM_FLAGS=()
 if [[ ${target_platform} == osx-64 ]]; then
   CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_SYSROOT="${CONDA_BUILD_SYSROOT}")
 fi
@@ -12,6 +14,7 @@ pushd build
   # Pass the directory of the data repository via OPJ_DATA_ROOT
 
   # Configure
+  # ZLIB is only a configure-time gate for PNG upstream: the tools keep no libz NEEDED entry.
   cmake -DCMAKE_INSTALL_PREFIX=$PREFIX \
         $CMAKE_ARGS \
         -DCMAKE_BUILD_TYPE=Release \
@@ -26,7 +29,7 @@ pushd build
         -DPNG_PNG_INCLUDE_DIR=$PREFIX/include \
         -DZLIB_LIBRARY=$PREFIX/lib/libz${SHLIB_EXT} \
         -DZLIB_INCLUDE_DIR=$PREFIX/include \
-        "${CMAKE_PLATFORM_FLAGS[@]}" \
+        ${CMAKE_PLATFORM_FLAGS[@]+"${CMAKE_PLATFORM_FLAGS[@]}"} \
         ..
 
   # Build and install
