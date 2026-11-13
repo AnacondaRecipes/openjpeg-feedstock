@@ -11,6 +11,7 @@ package:
 source:
   - url: https://github.com/uclouvain/openjpeg/archive/v{{ version }}.tar.gz
     sha256: a695fbe19c0165f295a8531b1e4e855cd94d0875d2f88ec4b61080677e27188a
+    # Backport OSV-2025-219 bounds check; drop when a release includes upstream 91d08b1.
     patches:
       - fix-heap-buffer-overlfow-in-opj_j2k_read_sod.patch
   # Data required to run the tests
@@ -34,7 +35,6 @@ requirements:
     - {{ compiler('c') }}
     - cmake
     - make          # [unix]
-    - pkg-config    # [unix]
     - ninja-base    # [win]
     - git
   host:
